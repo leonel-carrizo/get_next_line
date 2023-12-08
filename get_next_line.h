@@ -6,7 +6,7 @@
 /*   By: lcarrizo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:04:37 by lcarrizo          #+#    #+#             */
-/*   Updated: 2023/12/05 23:11:51 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:25:41 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 // Just to test: (DELETE WHEN FINISH)
 # include <limits.h>
 # include <string.h>
