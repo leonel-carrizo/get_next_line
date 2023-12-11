@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarrizo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 21:03:04 by lcarrizo          #+#    #+#             */
-/*   Updated: 2023/12/11 17:31:23 by lcarrizo         ###   ########.fr       */
+/*   Created: 2023/12/08 21:49:00 by lcarrizo          #+#    #+#             */
+/*   Updated: 2023/12/11 17:39:35 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(void)
 	int	fd;
 	char	*path;
 	char	*line;
-
+	
 	path = "/nfs/homes/lcarrizo/Projects/get_next_line/get_next_line-trash/tests";
 	fd = open(path, O_RDONLY);
 	// loop for calling  get)next_line()
@@ -53,6 +53,8 @@ int	main(void)
 // Ser capas de acceder al archivo.
 // Abrir el archivo.
 // Almacenar memoria para guardar la linea encontrada.
+// 	- Array.
+// 	- Listas Enlazadas.
 // Leer el contenido del archivo ya sea:
 // 	- leer caracter por caracter.
 // 	- leer cadena por cadena.
@@ -62,9 +64,10 @@ int	main(void)
 // Retornar el (escribir en la terminal) la linea leida.
 // Liberar la memoria de la linea retornada.
 // Repetir el hasta el llegar al final del archivo.
+// Cerrar el archivo.
 //
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-//https://excalidraw.com/#json=ihq4Jgrfo9Cw1jHGCizIZ,Sh-eHm_PIpm_364By4j1Nw
+// app.diagrams.net
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* Write a function that returns a line read from a file descriptor:
  * fd: The file descriptor to read from
