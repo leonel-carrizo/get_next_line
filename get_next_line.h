@@ -6,7 +6,7 @@
 /*   By: lcarrizo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:04:37 by lcarrizo          #+#    #+#             */
-/*   Updated: 2023/12/08 12:25:41 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2023/12/11 17:17:04 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@
 
 //Functions prototypes
 char	*get_next_line(int fd);
-size_t	ft_strlen(*s);
+size_t	ft_strlen(char *s);
 
 #endif

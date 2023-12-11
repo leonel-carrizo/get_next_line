@@ -6,7 +6,7 @@
 /*   By: lcarrizo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:03:04 by lcarrizo          #+#    #+#             */
-/*   Updated: 2023/12/08 15:21:10 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2023/12/11 17:31:23 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,38 @@
 
 char	*get_next_line(int fd)
 {
-	
+	char		buffer[10];
+	ssize_t		n_bytes;
+	char 		*line;
+	if (fd == -1)
+	{
+		perror("Error");
+		return (NULL);
+	}
+	line = buffer;
+	printf("antes de comprobar: %s\n", buffer);
+	n_bytes = read(fd, buffer, ft_strlen(buffer));
+	if(n_bytes < 1)
+	{
+		printf("in comprobacion: %s\n",buffer);
+		return (NULL);
+	}
+	return (line);
 }
 
 int	main(void)
 {
 	int	fd;
-	char	*pathname;
-	static int buffer;
+	char	*path;
+	char	*line;
 
-	pathname = "~/projects/get_next_line/get_next_line-trash/test/test.txt";
-	fd = open(pathname, O_RDONLY);
-	if (fd == -1)
-	{
-		perror("open");
-		return (1);
-	}
+	path = "/nfs/homes/lcarrizo/Projects/get_next_line/get_next_line-trash/tests";
+	fd = open(path, O_RDONLY);
 	// loop for calling  get)next_line()
-	while (fd)
-	{
-		get_next_line(fd);
-	}
+	line =	get_next_line(fd);
+	printf("The text is: %s\n", line);
 
-	close(fd)
+	close(fd);
 	return (0);
 }
 
