@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/08 21:49:00 by lcarrizo          #+#    #+#             */
-/*   Updated: 2023/12/11 17:39:35 by lcarrizo         ###   ########.fr       */
+/*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
+/*   Updated: 2023/12/13 04:33:10 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,35 @@
 
 char	*get_next_line(int fd)
 {
-	char		buffer[10];
+	size_t		BUFFER_SIZE;
+	char		*buff;
 	ssize_t		n_bytes;
 	char 		*line;
+
 	if (fd == -1)
 	{
 		perror("Error");
-		return (NULL);
+		return ("nada");
 	}
-	line = buffer;
-	printf("antes de comprobar: %s\n", buffer);
-	n_bytes = read(fd, buffer, ft_strlen(buffer));
-	if(n_bytes < 1)
-	{
-		printf("in comprobacion: %s\n",buffer);
+	BUFFER_SIZE = 10;
+	buff = (char *)malloc(BUFFER_SIZE);
+	if (!buff)
 		return (NULL);
-	}
+	line = buff;
+	while ((n_bytes = read(fd, buff, BUFFER_SIZE)) > 0)
+		write(1, buff, n_bytes);
+	if(n_bytes == 0)
+		return ("menos");
 	return (line);
 }
 
 int	main(void)
 {
 	int	fd;
-	char	*path;
+	const char	*path;
 	char	*line;
 	
-	path = "/nfs/homes/lcarrizo/Projects/get_next_line/get_next_line-trash/tests";
+	path = "/home/l3o/42-London/get_next_line/get_next_line-trash/tests/test.txt";
 	fd = open(path, O_RDONLY);
 	// loop for calling  get)next_line()
 	line =	get_next_line(fd);
