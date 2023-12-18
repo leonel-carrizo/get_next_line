@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2023/12/15 21:19:16 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2023/12/18 13:51:05 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 char	*get_next_line(int fd)
 {
 	char		*buff;
-	ssize_t		n_bytes;
 	char		*line;
-
+	ssize_t		n_bytes;
+		
+	
 	if (fd < 0 || BUFFER_SIZE <=0)
 		return (NULL);
 	buff = (char *)malloc(BUFFER_SIZE);
