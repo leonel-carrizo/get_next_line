@@ -6,7 +6,7 @@
 /*   By: lcarrizo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:04:37 by lcarrizo          #+#    #+#             */
-/*   Updated: 2023/12/16 02:02:09 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2023/12/20 21:12:19 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,7 @@ typedef struct		s_list
 //Functions prototypes
 char	*get_next_line(int fd);
 size_t	ft_strlen(char *s);
+size_t	ft_strlcpy(char *dst, char *src, size_t size)
+void	check_new_line(char *buff);
 
 #endif
