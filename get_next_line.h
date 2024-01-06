@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarrizo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 21:04:37 by lcarrizo          #+#    #+#             */
-/*   Updated: 2023/12/20 21:12:19 by lcarrizo         ###   ########.fr       */
+/*   Created: 2023/12/27 22:26:39 by lcarrizo          #+#    #+#             */
+/*   Updated: 2024/01/04 22:34:54 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/stat.h>
+# include <sys/types.h>
 # include <fcntl.h>
 // Just to test: (DELETE WHEN FINISH)
 # include <limits.h>
@@ -23,21 +24,26 @@
 # include <stdio.h>
 
 //to define nodo list
-typedef struct		s_list
+typedef struct	s_list
 {
-	char		*str_readós;
+	char		*str_read;
 	struct s_list	*next;
 }			t_list;
 
 //to define predefined BUFFER SIZE 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 6
 # endif
 
 //Functions prototypes
 char	*get_next_line(int fd);
+char	*new_line(t_list *list);
+size_t	ft_strlcpy(char *dst, char *src, size_t size);
 size_t	ft_strlen(char *s);
-size_t	ft_strlcpy(char *dst, char *src, size_t size)
-void	check_new_line(char *buff);
+int	find_new_line(t_list *list);
+void	save_str(int fd, t_list **list);
+void	create_node(t_list **list, char *buff);
+void	clean_node(t_list *list);
+t_list	*last_node(t_list *list);
 
 #endif

@@ -6,40 +6,95 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2023/12/20 21:12:15 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/05 20:26:33 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+/* return a new line from file descriptor given */
 char	*get_next_line(int fd)
 {
-	char		*buff;
-	char		*line;
-	ssize_t		n_bytes;
+	char			*line;
+	static t_list	*str_storage = NULL;
 
-	n_bytes = read(fd, buff, BUFFER_SIZE);
-	if (fd < 0 || BUFFER_SIZE <=0 || n_bytes < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
 		return (NULL);
-	// 1. 
-
+	line = NULL;
+	if (find_new_line(str_storage) < 1) //if there is not new line in storage, save read
+	// 1.save string read on storage.
+		save_str(fd, &str_storage);
+	// 3. create lines to return
+	line = new_line(str_storage);
+	// 4. clean storage.
+	//claen_node(t_list str_storage);
 	return (line);
 }
 
+/* create new node in list and save str read */
+void	save_str(int fd, t_list	**list)
+{
+	ssize_t		bytes_read;
+	char		*buff;
 
+	//read the file
+	buff = malloc(BUFFER_SIZE + 1);
+	if (!buff)
+		return ;
+	bytes_read = read(fd, buff, BUFFER_SIZE);
+	if (!bytes_read)
+	{
+		free(buff);
+		return ;
+	}
+	buff[bytes_read] = '\0';
+	// create new node.
+	create_node(list, buff);
+}
+
+/* search New Line in all STORAGE and return it.
+ * si hay una nueva linea, opiar esa linea para devolverla.
+ * modificar el nodo eliminando lo que ya se copio y dejando solo el resto.
+ * si hay otra linea repetir.
+ */
+char	*new_line(t_list *list)
+{
+	char	*new_line;
+	int	i;
+	int	len_new_line;
+
+	i = 0;
+	len_new_line = ft_strlen(0)
+	new_line = (char *)malloc(sizeof(char) + 1);
+	if (!new_line)
+		return (NULL);
+	while (list->str_read[i] && list)
+	{
+		while (list->str_read[i] != '\n')
+			i++;
+		ft_strlcpy(new_line, src, i - 1);
+		list = list->next;
+	}
+	return (new_line);
+}
+
+// ---------------------------------- MAIN ---------------------------------- //
 int	main(void)
 {
 	int		fd;
-	char	*line;
+	char	*lines;
+	int	i;
 
-	fd = open("tests/test", O_RDONLY);
-	while (fd == 1)
+	fd = open("tests/test.txt", O_RDONLY);
+	i = 0;
+	while (1)
 	{
-		line = get_next_line(fd);
-		if (line == NULL)
-			break ;
-		printf("%s\n", line);
-		free(line);
+		lines = get_next_line(fd);
+		if (lines == NULL)
+			return (1);
+		printf("MAIN %d: |%s|\n\n",i , lines);
+		i++;
+		free(lines);
 	}
 	close(fd);
 	return (0);
