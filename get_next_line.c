@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/05 20:26:33 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/08 19:14:13 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_next_line(int fd)
 		save_str(fd, &str_storage);
 	// 3. create lines to return
 	line = new_line(str_storage);
-	// 4. clean storage.
+	// 4. clean storage. new_line, buff, nodes.
 	//claen_node(t_list str_storage);
 	return (line);
 }
@@ -52,29 +52,37 @@ void	save_str(int fd, t_list	**list)
 	create_node(list, buff);
 }
 
-/* search New Line in all STORAGE and return it.
- * si hay una nueva linea, opiar esa linea para devolverla.
- * modificar el nodo eliminando lo que ya se copio y dejando solo el resto.
- * si hay otra linea repetir.
+/* search New Line in all STORAGE and return it:
+ * - iterate since the begin of list save the lenght until new line.
+ * if new line, calculate the space for malloc.
+ * copy the new line in new_line.
+ * if fail free new_line.
+ * 
  */
 char	*new_line(t_list *list)
 {
 	char	*new_line;
 	int	i;
-	int	len_new_line;
 
+	new_line = NULL;
 	i = 0;
-	len_new_line = ft_strlen(0)
-	new_line = (char *)malloc(sizeof(char) + 1);
-	if (!new_line)
-		return (NULL);
-	while (list->str_read[i] && list)
+	while (list)
 	{
-		while (list->str_read[i] != '\n')
+		while (list->str_read[i])
+		{
+			if (list->str_read[i] == '\n')
+			{
+				i++;
+				break ;
+			}
 			i++;
-		ft_strlcpy(new_line, src, i - 1);
+		}
 		list = list->next;
 	}
+	new_line = (char *)malloc(sizeof(char) * (i + 1));
+	if (!new_line)
+		return (NULL);
+	copy_line(list, new_line);
 	return (new_line);
 }
 

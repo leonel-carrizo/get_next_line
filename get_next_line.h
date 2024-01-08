@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:26:39 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/04 22:34:54 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/08 19:09:38 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct	s_list
 //Functions prototypes
 char	*get_next_line(int fd);
 char	*new_line(t_list *list);
-size_t	ft_strlcpy(char *dst, char *src, size_t size);
+void	copy_line(t_list *list, char *line);
 size_t	ft_strlen(char *s);
 int	find_new_line(t_list *list);
 void	save_str(int fd, t_list **list);

@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/05 14:47:09 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/08 21:45:29 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,27 @@ size_t	ft_strlen(char *s)
 	return (0);
 }
 
-/* create a copy of src and copy it in dst */
-size_t	ft_strlcpy(char *dst, char *src, size_t size)
+/* copy a line from a linked list to a pointer */
+void	copy_line(t_list *list, char *line)
 {
-	size_t	len;
+	int	i;
 
-	len = ft_strlen(src);
-	if (size <= 0)
-		return (len);
-	size -= 1;
-	while (*src && size--)
+	while (list)
 	{
-		printf("aqui quede");
-		*dst++ = *src++;
+		i = 0;
+		while (list->str_read[i])
+		{
+			if (list->str_read[i] == '\n')
+			{
+				*line++ = list->str_read[i];
+				return ;
+			}
+			*line++ = list->str_read[i];
+			i++;
+		}
+		list = list->next;
 	}
-	*dst = '\0';
-	return (len);
+	line[i] = '\0';
 }
 
 /* return a pointer a the las node from a linked list */
@@ -94,11 +99,15 @@ int	find_new_line(t_list *list)
 	return (0);
 }
 
-/* free memory from */
+/* free memory */
 // void	clean_node(t_list *list)
 // {
 // 	// busca la pimera linea desde el primer nodo
 // 	// crea un nuevo nodo y copia el contenido despues de la primera linea
 // 	// elimina el nodo viejo
-// 	// agrega el nuevo nodo al inicio de la lisa si hayconido en el
+// 	// agrega el nuevo nodo al inicio de la lista
+// 	t_list	*temp;
+//
+// 	temp = NULL;
+//
 // }
