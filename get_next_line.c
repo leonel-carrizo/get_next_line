@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/08 19:14:13 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/09 11:51:31 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_next_line(int fd)
 	// 3. create lines to return
 	line = new_line(str_storage);
 	// 4. clean storage. new_line, buff, nodes.
-	//claen_node(t_list str_storage);
+	clean_node(str_storage);
 	return (line);
 }
 
@@ -52,13 +52,7 @@ void	save_str(int fd, t_list	**list)
 	create_node(list, buff);
 }
 
-/* search New Line in all STORAGE and return it:
- * - iterate since the begin of list save the lenght until new line.
- * if new line, calculate the space for malloc.
- * copy the new line in new_line.
- * if fail free new_line.
- * 
- */
+/* search New Line in all STORAGE and return it */
 char	*new_line(t_list *list)
 {
 	char	*new_line;
@@ -66,6 +60,7 @@ char	*new_line(t_list *list)
 
 	new_line = NULL;
 	i = 0;
+	// calculate the lenght for malloc
 	while (list)
 	{
 		while (list->str_read[i])

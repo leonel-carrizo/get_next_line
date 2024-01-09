@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:26:39 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/08 19:09:38 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/09 11:42:13 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct	s_list
 char	*get_next_line(int fd);
 char	*new_line(t_list *list);
 void	copy_line(t_list *list, char *line);
-size_t	ft_strlen(char *s);
+int	len_to_copy(t_list *list);
 int	find_new_line(t_list *list);
 void	save_str(int fd, t_list **list);
 void	create_node(t_list **list, char *buff);
