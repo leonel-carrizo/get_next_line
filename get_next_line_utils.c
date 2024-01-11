@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/09 12:40:08 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/11 21:47:18 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	copy_line(t_list *list, char *line)
 {
 	int	i;
 
-	while (list)
+	while (list )
 	{
 		i = 0;
 		while (list->str_read[i])
@@ -66,9 +66,10 @@ t_list	*last_node(t_list *list)
 void	create_node(t_list **list, char *buff)
 {
 	t_list 	*new_node = NULL;
+	t_list	*last = *list;
 
 	// interate until the last node
-	*list = last_node(*list);
+	last = last_node(*list);
 	// add node in the last position
 	new_node = (t_list *)malloc(sizeof(t_list));
 	if (!new_node)
@@ -77,7 +78,12 @@ void	create_node(t_list **list, char *buff)
 	new_node->str_read = buff;
 	new_node->next = NULL;
 	//add node to the list
-	*list = new_node;
+	if (!*list)
+	{
+		*list = new_node;
+		return ;
+	}
+	last->next = new_node;
 }
 
 /* iterates through a node to search new line, if finds return 1 otherwise 0 */
@@ -123,6 +129,8 @@ void	clean_node(t_list *list)
 			while (list->str_read[i])
 				i++;
 			temp = (char *)malloc(sizeof(char) * i + 1);
+			if (!temp)
+				return ;
 			j = 0;
 			// if still there are str in the node copy it in temp
 			while (list->str_read[j] != '\0')
@@ -137,5 +145,6 @@ void	clean_node(t_list *list)
 	// create a new node
 	create_node(&list, temp);
 	free(temp);
+	free(list);
 }
 

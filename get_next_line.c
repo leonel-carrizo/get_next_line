@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/09 11:51:31 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/11 20:58:18 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
 		return (NULL);
 	line = NULL;
-	if (find_new_line(str_storage) < 1) //if there is not new line in storage, save read
-	// 1.save string read on storage.
+	while (find_new_line(str_storage) < 1) //if there is not new line in storage, save read
 		save_str(fd, &str_storage);
+	// 1.save string read on storage.
 	// 3. create lines to return
 	line = new_line(str_storage);
 	// 4. clean storage. new_line, buff, nodes.
@@ -56,8 +56,10 @@ void	save_str(int fd, t_list	**list)
 char	*new_line(t_list *list)
 {
 	char	*new_line;
+	t_list	*temp;
 	int	i;
 
+	temp = list;
 	new_line = NULL;
 	i = 0;
 	// calculate the lenght for malloc
@@ -77,7 +79,7 @@ char	*new_line(t_list *list)
 	new_line = (char *)malloc(sizeof(char) * (i + 1));
 	if (!new_line)
 		return (NULL);
-	copy_line(list, new_line);
+	copy_line(temp, new_line);
 	return (new_line);
 }
 
@@ -95,7 +97,7 @@ int	main(void)
 		lines = get_next_line(fd);
 		if (lines == NULL)
 			return (1);
-		printf("MAIN %d: |%s|\n\n",i , lines);
+		printf("Line %d: |%s|\n",i , lines);
 		i++;
 		free(lines);
 	}
