@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/11 20:58:18 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:45:40 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = NULL;
 	while (find_new_line(str_storage) < 1) //if there is not new line in storage, save read
-		save_str(fd, &str_storage);
-	// 1.save string read on storage.
+		save_str(fd, &str_storage); // 1.save string read on storage.
 	// 3. create lines to return
 	line = new_line(str_storage);
 	// 4. clean storage. new_line, buff, nodes.
@@ -50,6 +49,8 @@ void	save_str(int fd, t_list	**list)
 	buff[bytes_read] = '\0';
 	// create new node.
 	create_node(list, buff);
+	if (bytes_read < 0)
+		free(buff);
 }
 
 /* search New Line in all STORAGE and return it */
