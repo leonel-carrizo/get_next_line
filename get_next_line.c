@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/13 21:45:40 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/15 19:45:44 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_next_line(int fd)
 	// 3. create lines to return
 	line = new_line(str_storage);
 	// 4. clean storage. new_line, buff, nodes.
-	clean_node(str_storage);
+	clean_list(&str_storage);
 	return (line);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/11 21:47:18 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/15 22:46:39 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,19 @@ void	copy_line(t_list *list, char *line)
 {
 	int	i;
 
+	i = 0;
 	while (list )
 	{
-		i = 0;
 		while (list->str_read[i])
 		{
 			if (list->str_read[i] == '\n')
 			{
-				*line++ = list->str_read[i];
+				line[i] = list->str_read[i];
+				i++;
+				line[i] = '\0';
 				return ;
 			}
-			*line++ = list->str_read[i];
+			line[i] = list->str_read[i];
 			i++;
 		}
 		list = list->next;
@@ -106,45 +108,77 @@ int	find_new_line(t_list *list)
 }
 
 /* clean list, remove lines returned */
-void	clean_node(t_list *list)
+void	clean_list(t_list **list)
 {
 	// busca la pimera linea desde el primer nodo
 	// crea un nuevo nodo y copia el contenido despues de la primera linea
 	// elimina el nodo viejo
 	// agrega el nuevo nodo al inicio de la lista
-	char	*temp;
+	char	*new_str;
+	t_list	*temp_list;
 	int	i;
 	int	j;
 
-	temp = NULL;
-	i = 0;
-	while (list)
+	new_str = NULL;
+	temp_list = *list;
+	while (temp_list)
 	{
-		while (*(list->str_read) && *(list->str_read) != '\n')
-			list->str_read++;
-		if (*(list->str_read) == '\n')
+		j = 0;
+		while (temp_list->str_read[j] && temp_list->str_read[j] != '\n')
+			j++;
+		if (temp_list->str_read[j] == '\n')
 		{
-			list->str_read++;
+			j++;
 			// calculate lenght for malloc
-			while (list->str_read[i])
-				i++;
-			temp = (char *)malloc(sizeof(char) * i + 1);
-			if (!temp)
-				return ;
-			j = 0;
-			// if still there are str in the node copy it in temp
-			while (list->str_read[j] != '\0')
+			i = 0;
+			while (temp_list->str_read[j])
 			{
-				temp[j] = list->str_read[j];
 				j++;
+				i++;
 			}
-			list->str_read[j] = '\0';
+			new_str = (char *)malloc(sizeof(char) * i + 1);
+			if (!new_str)
+				return ;
+			j -= i;
+			i = 0;
+			// if still there are str in the node copy it in temp
+			while (temp_list->str_read[j] != '\0')
+			{
+				new_str[i] = temp_list->str_read[j];
+				j++;
+				i++;
+			}
+			new_str[i] = '\0';
 		}
-		list = list->next;
+		temp_list = temp_list->next;
 	}
-	// create a new node
-	create_node(&list, temp);
-	free(temp);
-	free(list);
+	//TODO: create nodo to save `new_str`
+	add_str(*list, new_str);
+	// delete the old node and add new_str to head of the list
+	clean_node(list);
+	free(new_str);
 }
 
+void	add_str(t_list *list, char *str)
+{
+	t_list *new_node = NULL;
+
+	new_node = (t_list *)malloc(sizeof(t_list));
+	if (!new_node)
+		return ;
+	new_node->str_read = str;
+	new_node->next = NULL;
+	list->next = new_node;
+}
+
+void	clean_node(t_list **list)
+{
+	t_list	**temp = NULL;
+
+	if(list)
+	{
+		temp = list;
+		list = list->next;
+		free(temp);
+	}
+}
