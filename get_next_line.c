@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/15 19:45:44 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/17 22:13:14 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_next_line(int fd)
 	char			*line;
 	static t_list	*str_storage = NULL;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0) //TODO: check tester.
 		return (NULL);
 	line = NULL;
 	while (find_new_line(str_storage) < 1) //if there is not new line in storage, save read
