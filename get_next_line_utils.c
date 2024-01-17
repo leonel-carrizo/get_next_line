@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/15 22:46:39 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/17 01:30:04 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	len_to_copy(t_list *list)
 {
 	int	len;
 
+	len = 0;
 	while (list->str_read[len])
 	{
 		if (list->str_read[len] == '\n')
@@ -153,32 +154,35 @@ void	clean_list(t_list **list)
 		temp_list = temp_list->next;
 	}
 	//TODO: create nodo to save `new_str`
-	add_str(*list, new_str);
-	// delete the old node and add new_str to head of the list
-	clean_node(list);
+	add_str(list, new_str);
 	free(new_str);
 }
 
-void	add_str(t_list *list, char *str)
+/* take a pointer to a pointer linked list to modify, add new nodo in the 
+ * beginnig of the list whith a new string and delete the head */
+void	add_str(t_list **list, char *str)
 {
 	t_list *new_node = NULL;
+	t_list	*temp = NULL;
 
 	new_node = (t_list *)malloc(sizeof(t_list));
 	if (!new_node)
 		return ;
-	new_node->str_read = str;
+	new_node->str_read = str; // estoy igualando a la direccion de memoria
+				  // no estoy copiando realmente
+				  // como es referencia, al free(str) causa
+				  // que new_node->str_read apunte a una
+				  // seccion de momoria liberada
+				  // TODO:
+				  // copiar el contenido de `str` a
+				  // new_node->str_read
 	new_node->next = NULL;
-	list->next = new_node;
-}
-
-void	clean_node(t_list **list)
-{
-	t_list	**temp = NULL;
-
+	(*list)->next = new_node;
+	// add the new node with the new string and replace the list head.
 	if(list)
 	{
-		temp = list;
-		list = list->next;
+		temp = *list;
+		*list = (*list)->next;
 		free(temp);
 	}
 }

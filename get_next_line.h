@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:26:39 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/15 22:40:56 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/17 01:25:57 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ int	find_new_line(t_list *list);
 void	save_str(int fd, t_list **list);
 void	create_node(t_list **list, char *buff);
 void	clean_list(t_list **list);
-void	clean_node(t_list **list);
-void	add_str(t_list *list, char *str);
+void	add_str(t_list **ilist, char *str);
 t_list	*last_node(t_list *list);
 
 #endif
