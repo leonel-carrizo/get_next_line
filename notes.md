@@ -21,3 +21,10 @@ para reservar memoria para una variable se almacenan en el **heap**
 y esto es algo que debemos manejar para liberar este espacio de memoria
 para usarlo posteriormente
 
+
+18/01/2024
+
+**OJO**: cuando no hay un strig extra despues de copiar la linea nueva, no se estan borrando todos esos nodos
+	que quedaron desde el principio, esta retornando la linea pero cuando coincide el buffer con una nueva
+	linea, de debe eliminar toda la lista, ver funcion `add_str`
+

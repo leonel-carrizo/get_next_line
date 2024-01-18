@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/17 22:13:14 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/18 11:11:20 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	save_str(int fd, t_list	**list)
 	char		*buff;
 
 	//read the file
-	buff = malloc(BUFFER_SIZE + 1);
+	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return ;
 	bytes_read = read(fd, buff, BUFFER_SIZE);
@@ -59,28 +59,31 @@ char	*new_line(t_list *list)
 	char	*new_line;
 	t_list	*temp;
 	int	i;
+	int	len;
 
 	temp = list;
 	new_line = NULL;
-	i = 0;
 	// calculate the lenght for malloc
-	while (list)
+	len = 0;
+	while (temp)
 	{
-		while (list->str_read[i])
+		i = 0;
+		while (temp->str_read[i])
 		{
-			if (list->str_read[i] == '\n')
+			if (temp->str_read[i] == '\n')
 			{
-				i++;
+				len++;
 				break ;
 			}
 			i++;
+			len++;
 		}
-		list = list->next;
+		temp = temp->next;
 	}
-	new_line = (char *)malloc(sizeof(char) * (i + 1));
+	new_line = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new_line)
 		return (NULL);
-	copy_line(temp, new_line);
+	copy_line(list, new_line);
 	return (new_line);
 }
 
