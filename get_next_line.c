@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/19 13:45:37 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/19 19:47:10 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*get_next_line(int fd)
 	buff = NULL;
 	while (find_new_line(str_storage) < 1) //if there is not new line in storage, save read
 	{
-		save_str(fd, &str_storage, buff); // 1.save string read on storage.
+		save_str(fd, &str_storage, &buff); // 1.save string read on storage.
 		if (!buff)
 			return (NULL);
 	}
@@ -39,23 +39,24 @@ char	*get_next_line(int fd)
 }
 
 /* create new node in list and save str read */
-void	save_str(int fd, t_list	**list, char *buff)
+void	save_str(int fd, t_list	**list, char **buff)
 {
 	ssize_t		bytes_read;
 
 	//read the file
-	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	*buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return ;
-	bytes_read = read(fd, buff, BUFFER_SIZE);
+	bytes_read = read(fd, *buff, BUFFER_SIZE);
 	if (bytes_read <= 0)
 	{
-		free(buff);
+		free(*buff);
+		*buff = NULL;
 		return ;
 	}
-	buff[bytes_read] = '\0';
+	buff[bytes_read + 1] = '\0';
 	// create new node.
-	create_node(list, buff);
+	create_node(list, *buff);
 	//if (bytes_read < 0)
 	//	free(buff);
 }
@@ -103,13 +104,13 @@ int	main(void)
 	while (1)
 	{
 		lines = get_next_line(fd);
-		if (lines == NULL)
-			return (1);
+		if (!lines)
+			break ;
 		printf("Line %d: |%s|\n",i , lines);
 		i++;
 		free(lines);
 	}
-	close(fd);
+	//close(fd);
 	return (0);
 }
 
