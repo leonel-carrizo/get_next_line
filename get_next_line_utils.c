@@ -6,28 +6,24 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/18 13:43:02 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:40:17 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
-/* *************************************************************************** */
+/**************************************************************************** */
 
 #include "get_next_line.h"
 
 /* measures the lenght of t */
-int	len_to_copy(t_list *list)
+int	len_str(char *s)
 {
 	int	len;
 
 	len = 0;
-	while (list->str_read[len])
+	while (*s)
 	{
-		if (list->str_read[len] == '\n')
-		{
-			len++;
-			return (len) ;
-		}
+		s++;
 		len++;
 	}
-	return (0);
+	return (len);
 }
 
 /* copy a line from a linked list to a pointer */
@@ -43,7 +39,7 @@ void	copy_line(t_list *list, char *line)
 		while (list->str_read[j])
 		{
 			if (list->str_read[j] == '\n')
-			*{
+			{
 				line[i] = list->str_read[j];
 				i++;
 				line[i] = '\0';
@@ -154,14 +150,23 @@ void	clean_list(t_list **list)
 					j++;
 					len++;
 				}
-				new_str[len*] = '\0';
+				new_str[len] = '\0';
 			}
 		}
 		temp_list = temp_list->next;
 	}
 	//TODO: create nodo to save `new_str`
-	add_str(list, new_str);
-	//free(new_str);
+	if (new_str)
+	{
+		add_str(list, new_str);
+		free(new_str);
+	}
+	if (!new_str && !temp_list)
+	{
+		free((*list)->str_read);
+		free(*list);
+		*list = NULL;
+	}
 }
 
 /* take a pointer to a pointer linked list to modify, add new nodo in the 
@@ -170,6 +175,7 @@ void	add_str(t_list **list, char *str)
 {
 	t_list *new_node = NULL;
 	t_list	*temp = NULL;
+	int	i;
 
 	if (str)
 	{
@@ -177,7 +183,14 @@ void	add_str(t_list **list, char *str)
 		new_node = (t_list *)malloc(sizeof(t_list));
 		if (!new_node)
 			return ;
-		new_node->str_read = str;
+		new_node->str_read = (char *)malloc(sizeof(char) * len_str(str) + 1);
+		i = 0;
+		while (str[i])
+		{
+			new_node->str_read[i] = str[i];
+			i++;
+		}
+		new_node->str_read[i] = '\0';
 		new_node->next = NULL;
 		(*list)->next = new_node;
 		// add the new node with the new string and replace the list head.

@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/18 11:11:20 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:45:37 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,38 @@ char	*get_next_line(int fd)
 {
 	char			*line;
 	static t_list	*str_storage = NULL;
+	char		*buff;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0) //TODO: check tester.
 		return (NULL);
 	line = NULL;
+	buff = NULL;
 	while (find_new_line(str_storage) < 1) //if there is not new line in storage, save read
-		save_str(fd, &str_storage); // 1.save string read on storage.
+	{
+		save_str(fd, &str_storage, buff); // 1.save string read on storage.
+		if (!buff)
+			return (NULL);
+	}
 	// 3. create lines to return
-	line = new_line(str_storage);
+	new_line(str_storage, &line);
 	// 4. clean storage. new_line, buff, nodes.
 	clean_list(&str_storage);
+	if (!line)
+		return (NULL);
 	return (line);
 }
 
 /* create new node in list and save str read */
-void	save_str(int fd, t_list	**list)
+void	save_str(int fd, t_list	**list, char *buff)
 {
 	ssize_t		bytes_read;
-	char		*buff;
 
 	//read the file
 	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return ;
 	bytes_read = read(fd, buff, BUFFER_SIZE);
-	if (!bytes_read)
+	if (bytes_read <= 0)
 	{
 		free(buff);
 		return ;
@@ -49,20 +56,18 @@ void	save_str(int fd, t_list	**list)
 	buff[bytes_read] = '\0';
 	// create new node.
 	create_node(list, buff);
-	if (bytes_read < 0)
-		free(buff);
+	//if (bytes_read < 0)
+	//	free(buff);
 }
 
 /* search New Line in all STORAGE and return it */
-char	*new_line(t_list *list)
+void	new_line(t_list *list, char **line)
 {
-	char	*new_line;
 	t_list	*temp;
 	int	i;
 	int	len;
 
 	temp = list;
-	new_line = NULL;
 	// calculate the lenght for malloc
 	len = 0;
 	while (temp)
@@ -80,11 +85,10 @@ char	*new_line(t_list *list)
 		}
 		temp = temp->next;
 	}
-	new_line = (char *)malloc(sizeof(char) * (len + 1));
-	if (!new_line)
-		return (NULL);
-	copy_line(list, new_line);
-	return (new_line);
+	*line = (char *)malloc(sizeof(char) * (len + 1));
+	if (!line)
+		return ;
+	copy_line(list, *line);
 }
 
 // ---------------------------------- MAIN ---------------------------------- //
