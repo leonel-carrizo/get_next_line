@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/19 12:40:17 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/20 19:04:23 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /**************************************************************************** */
 
@@ -69,22 +69,26 @@ void	create_node(t_list **list, char *buff)
 {
 	t_list 	*new_node = NULL;
 	t_list	*last = *list;
+	int		i;
 
-	// interate until the last node
-	last = last_node(*list);
-	// add node in the last position
 	new_node = (t_list *)malloc(sizeof(t_list));
-	if (!new_node)
+	new_node->str_read = (char *)malloc(sizeof(char) * len_str(buff) + 1);
+	if (!new_node || !new_node->str_read)
 		return ;
-	// add str read to new node
-	new_node->str_read = buff;
+	i = 0;
+	while (buff[i])
+	{
+		new_node->str_read[i] = buff[i];
+		i++;
+	}
+	new_node->str_read[i] = '\0';
 	new_node->next = NULL;
-	//add node to the list
 	if (!*list)
 	{
 		*list = new_node;
 		return ;
 	}
+	last = last_node(*list);
 	last->next = new_node;
 }
 
@@ -110,15 +114,13 @@ int	find_new_line(t_list *list)
 /* clean list, remove lines returned */
 void	clean_list(t_list **list)
 {
-	// busca la pimera linea desde el primer nodo
-	// crea un nuevo nodo y copia el contenido despues de la primera linea
-	// elimina el nodo viejo
-	// agrega el nuevo nodo al inicio de la lista
 	char	*new_str;
-	t_list	*temp_list;
+	t_list	*temp_list = NULL;
 	int	len;
 	int	j;
 
+	if (!*list)
+		return ;
 	new_str = NULL;
 	temp_list = *list;
 	len = 0;
@@ -131,12 +133,11 @@ void	clean_list(t_list **list)
 		{
 			j++;
 			// calculate lenght for malloc
-			while (temp_list->str_read[j])
+			while (temp_list->str_read[j] != '\0')
 			{
 				len++;
 				j++;
 			}
-			// if still there are str in the node copy it in temp
 			if (len > 0)
 			{
 				new_str = (char *)malloc(sizeof(char) * (len + 1));
@@ -155,7 +156,6 @@ void	clean_list(t_list **list)
 		}
 		temp_list = temp_list->next;
 	}
-	//TODO: create nodo to save `new_str`
 	if (new_str)
 	{
 		add_str(list, new_str);
@@ -163,8 +163,14 @@ void	clean_list(t_list **list)
 	}
 	if (!new_str && !temp_list)
 	{
-		free((*list)->str_read);
-		free(*list);
+		temp_list = *list;
+		while (temp_list)
+		{
+			temp_list = temp_list->next;
+			free((*list)->str_read);
+			free(*list);
+			*list = temp_list;
+		}
 		*list = NULL;
 	}
 }

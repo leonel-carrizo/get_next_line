@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/19 19:47:10 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/20 19:13:11 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,13 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = NULL;
 	buff = NULL;
-	while (find_new_line(str_storage) < 1) //if there is not new line in storage, save read
+	while (find_new_line(str_storage) < 1)
 	{
-		save_str(fd, &str_storage, &buff); // 1.save string read on storage.
+		save_str(fd, &str_storage, &buff);
 		if (!buff)
-			return (NULL);
+			break ;
 	}
-	// 3. create lines to return
 	new_line(str_storage, &line);
-	// 4. clean storage. new_line, buff, nodes.
 	clean_list(&str_storage);
 	if (!line)
 		return (NULL);
@@ -42,23 +40,24 @@ char	*get_next_line(int fd)
 void	save_str(int fd, t_list	**list, char **buff)
 {
 	ssize_t		bytes_read;
+	char	*temp;
 
-	//read the file
-	*buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buff)
+	temp = NULL;
+	temp = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!temp)
 		return ;
-	bytes_read = read(fd, *buff, BUFFER_SIZE);
+	bytes_read = read(fd, temp, BUFFER_SIZE);
 	if (bytes_read <= 0)
 	{
-		free(*buff);
-		*buff = NULL;
+		free (temp);
+		temp = NULL;
 		return ;
 	}
-	buff[bytes_read + 1] = '\0';
-	// create new node.
-	create_node(list, *buff);
-	//if (bytes_read < 0)
-	//	free(buff);
+	temp[bytes_read] = '\0';
+	*buff = temp;
+	create_node(list, temp);
+	free(temp);
+	temp = NULL;
 }
 
 /* search New Line in all STORAGE and return it */
@@ -68,6 +67,8 @@ void	new_line(t_list *list, char **line)
 	int	i;
 	int	len;
 
+	if (!list)
+		return ;
 	temp = list;
 	// calculate the lenght for malloc
 	len = 0;
@@ -106,11 +107,11 @@ int	main(void)
 		lines = get_next_line(fd);
 		if (!lines)
 			break ;
-		printf("Line %d: |%s|\n",i , lines);
+		printf("Line %d: %s",i , lines);
 		i++;
 		free(lines);
 	}
-	//close(fd);
+	close(fd);
 	return (0);
 }
 
@@ -119,7 +120,8 @@ int	main(void)
  * fd: The file descriptor to read from
  * Read line: correct behavior
  * NULL: there is nothing else to read, or an error occurred.
- * CHECK MEMORY LEACK -> valgrind a.out --leak-check=yes my_program arg1 arg2
+ * CHECK MEMORY LEACK:
+ * valgrind --show-error-list=yes --track-origins=yes --leak-check=full --tool=memcheck
  * -----------------------------------------------------------------------------
  * - Repeated calls (e.g., using a loop) to your get_next_line() function 
  *  should let you read the text file pointed to by the file descriptor, 
