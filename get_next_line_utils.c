@@ -6,25 +6,11 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/22 12:40:43 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:46:01 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-/* measures the lenght of t */
-int	len_str(char *s)
-{
-	int	len;
-
-	len = 0;
-	while (*s)
-	{
-		s++;
-		len++;
-	}
-	return (len);
-}
 
 /* copy a line from a linked list to a pointer */
 void	copy_line(t_list *list, char *line)
@@ -62,7 +48,10 @@ void	create_node(t_list **list, char *buff)
 
 	new_node = NULL;
 	new_node = (t_list *)malloc(sizeof(t_list));
-	new_node->str_read = (char *)malloc(sizeof(char) * len_str(buff) + 1);
+	i = 0;
+	while (buff[i])
+		i++;
+	new_node->str_read = (char *)malloc(sizeof(char) * i + 1);
 	if (!new_node || !new_node->str_read)
 		return ;
 	i = 0;
@@ -78,8 +67,6 @@ void	create_node(t_list **list, char *buff)
 		*list = new_node;
 		return ;
 	}
-	while ((*list)->next)
-		(*list) = (*list)->next;
 	(*list)->next = new_node;
 }
 
@@ -100,4 +87,25 @@ int	find_new_line(t_list *list)
 		i++;
 	}
 	return (0);
+}
+
+/* clean nodes after from a linked list */
+void	clean_nodes(t_list **list, char *str)
+{
+	t_list	*temp;
+
+	temp = *list;
+	while (temp)
+	{
+		temp = temp->next;
+		free((*list)->str_read);
+		free(*list);
+		*list = temp;
+	}
+	*list = NULL;
+	if (str)
+	{
+		create_node(list, str);
+		free(str);
+	}
 }

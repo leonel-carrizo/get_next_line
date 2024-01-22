@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/22 12:26:33 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:46:14 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	clean_list(t_list **list)
 	while (temp)
 	{
 		j = 0;
+		// checks if there is anything beyond the new line
 		while (temp->str_read[j] && temp->str_read[j] != '\n')
 			j++;
 		if (temp->str_read[j] == '\n')
@@ -38,6 +39,7 @@ void	clean_list(t_list **list)
 				len++;
 				j++;
 			}
+			//if there are chars after the new line save it
 			if (len > 0)
 			{
 				new_str = (char *)malloc(sizeof(char) * (len + 1));
@@ -56,20 +58,8 @@ void	clean_list(t_list **list)
 		}
 		temp = temp->next;
 	}
-	temp = *list;
-	while (temp)
-	{
-		temp = temp->next;
-		free((*list)->str_read);
-		free(*list);
-		*list = temp;
-	}
-	*list = NULL;
-	if (new_str)
-	{
-		create_node(list, new_str);
-		free(new_str);
-	}
+	//clean
+	clean_nodes(list, new_str);
 }
 
 /* return a new line from file descriptor given */
