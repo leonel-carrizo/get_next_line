@@ -67,3 +67,13 @@ para usarlo posteriormente
 	que quedaron desde el principio, esta retornando la linea pero cuando coincide el buffer con una nueva
 	linea, de debe eliminar toda la lista, ver funcion `add_str`
 
+
+22/01/20124
+hay fugas de memoria. la memoria allocada con malloc en la funcion `create_node` no
+`new_node` = 592c0 --> `**list`
+`new_node->str_read` = 592e0 --> `*list->str_read`
+
+-----DENTRO DE `SAVE_STR`------
+`new_node` = 59730
+`new_node->str_read` = 59750
+
