@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/20 19:13:11 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:40:36 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	main(void)
 	char	*lines;
 	int	i;
 
-	fd = open("tests/test.txt", O_RDONLY);
+	fd = open("tests/notes.md", O_RDONLY);
 	i = 0;
 	while (1)
 	{
