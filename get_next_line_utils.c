@@ -6,14 +6,14 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/22 23:19:35 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/23 10:40:48 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 /* returns a new string from the given index and the specific lenght */
-char	*add_str(char *str, int len, int index)
+char	*add_str(char *str, size_t len, size_t index)
 {
 	char	*new_str;
 	int		i;
@@ -36,8 +36,8 @@ char	*add_str(char *str, int len, int index)
 /* copy a line from a linked list to a pointer */
 void	copy_line(t_list *list, char *line)
 {
-	int	i;
-	int	j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	while (list)
@@ -66,7 +66,7 @@ void	create_node(t_list **list, char *buff)
 {
 	t_list	*new_node;
 	t_list	*last;
-	int		i;
+	size_t		i;
 
 	i = 0;
 	while (buff[i])
@@ -91,7 +91,7 @@ void	create_node(t_list **list, char *buff)
 /* iterates through a node to search new line, if finds return 1 otherwise 0 */
 int	find_new_line(t_list *list)
 {
-	int	i;
+	size_t	i;
 
 	if (list == NULL)
 		return (0);

@@ -6,55 +6,11 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/22 23:26:30 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/23 13:39:42 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-/* checks if there are more characters after a new line and saves it */
-void	extra_line(t_list *list, char *str)
-{
-	int	index;
-	int	len;
-
-	len = 0;
-	index = 0;
-	while (list->str_read[index] && list->str_read[index] != '\n')
-		index++;
-	if (list->str_read[index] == '\n')
-	{
-		index++;
-		while (list->str_read[index] != '\0')
-		{
-			len++;
-			index++;
-		}
-		if (len > 0 && str)
-		{
-			index -= len;
-			str = add_str(list->str_read, len, index);
-		}
-	}
-}
-
-/* clean list, remove lines returned */
-void	clean_list(t_list **list)
-{
-	char	*new_str;
-	t_list	*temp;
-
-	if (!*list)
-		return ;
-	new_str = NULL;
-	temp = *list;
-	while (temp)
-	{
-		extra_line(temp, new_str);
-		temp = temp->next;
-	}
-	clean_nodes(list, new_str);
-}
 
 /* return a new line from file descriptor given */
 char	*get_next_line(int fd)
@@ -63,13 +19,15 @@ char	*get_next_line(int fd)
 	static t_list	*str_storage = NULL;
 	char			*buff;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = NULL;
 	buff = NULL;
 	while (find_new_line(str_storage) < 1)
 	{
 		save_str(fd, &str_storage, &buff);
+		if (!str_storage)
+			return (NULL);
 		if (!buff)
 			break ;
 	}
@@ -108,8 +66,8 @@ void	save_str(int fd, t_list	**list, char **buff)
 void	new_line(t_list *list, char **line)
 {
 	t_list	*temp;
-	int		i;
-	int		len;
+	size_t		i;
+	size_t		len;
 
 	if (!list)
 		return ;
@@ -131,4 +89,48 @@ void	new_line(t_list *list, char **line)
 	if (!line)
 		return ;
 	copy_line(list, *line);
+}
+
+/* checks if there are more characters after a new line and saves it */
+void	extra_line(t_list *list, char **str)
+{
+	size_t	index;
+	size_t	len;
+
+	len = 0;
+	index = 0;
+	while (list->str_read[index] && list->str_read[index] != '\n')
+		index++;
+	if (list->str_read[index] == '\n')
+	{
+		index++;
+		while (list->str_read[index] != '\0')
+		{
+			len++;
+			index++;
+		}
+		if (len > 0)
+		{
+			index -= len;
+			*str = add_str(list->str_read, len, index);
+		}
+	}
+}
+
+/* clean list, remove lines returned */
+void	clean_list(t_list **list)
+{
+	char	*new_str;
+	t_list	*temp;
+
+	if (!*list)
+		return ;
+	new_str = NULL;
+	temp = *list;
+	while (temp)
+	{
+		extra_line(temp, &new_str);
+		temp = temp->next;
+	}
+	clean_nodes(list, new_str);
 }

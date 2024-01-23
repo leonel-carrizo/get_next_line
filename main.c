@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 23:26:00 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/22 23:29:44 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/23 13:45:50 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(void)
 	char	*lines;
 	int		i;
 
-	fd = open("tests/test.txt", O_RDONLY);
+	fd = open("tests/files/41_no_nl", O_RDWR);
 	i = 1;
 	while (1)
 	{
@@ -30,6 +30,7 @@ int	main(void)
 		i++;
 		free(lines);
 	}
-	close(fd);
+	if (fd > 0)
+		close(fd);
 	return (0);
 }
