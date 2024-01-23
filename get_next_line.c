@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/23 13:39:42 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/23 22:16:34 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,13 @@ void	save_str(int fd, t_list	**list, char **buff)
 	if (bytes_read <= 0)
 	{
 		free (temp);
-		temp = NULL;
+		*buff = NULL;
 		return ;
 	}
 	temp[bytes_read] = '\0';
 	*buff = temp;
 	create_node(list, temp);
 	free(temp);
-	temp = NULL;
 }
 
 /* search New Line in all STORAGE and return it */
@@ -91,6 +90,24 @@ void	new_line(t_list *list, char **line)
 	copy_line(list, *line);
 }
 
+/* clean list, remove lines returned */
+void	clean_list(t_list **list)
+{
+	char	*new_str;
+	t_list	*temp;
+
+	if (!*list)
+		return ;
+	new_str = NULL;
+	temp = *list;
+	while (temp)
+	{
+		extra_line(temp, &new_str);
+		temp = temp->next;
+	}
+	clean_nodes(list, new_str);
+}
+
 /* checks if there are more characters after a new line and saves it */
 void	extra_line(t_list *list, char **str)
 {
@@ -115,22 +132,4 @@ void	extra_line(t_list *list, char **str)
 			*str = add_str(list->str_read, len, index);
 		}
 	}
-}
-
-/* clean list, remove lines returned */
-void	clean_list(t_list **list)
-{
-	char	*new_str;
-	t_list	*temp;
-
-	if (!*list)
-		return ;
-	new_str = NULL;
-	temp = *list;
-	while (temp)
-	{
-		extra_line(temp, &new_str);
-		temp = temp->next;
-	}
-	clean_nodes(list, new_str);
 }
