@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/24 12:35:39 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:12:39 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,15 @@ void	new_line(t_list *list, char **line)
 	while (temp)
 	{
 		i = 0;
-		while (temp->str_read[i++])
+		while (temp->str_read[i])
 		{
 			len++;
-			if (temp->str_read[i] == '\n')
+			if (temp->str_read[i++] == '\n')
 				break ;
 		}
 		temp = temp->next;
 	}
-	*line = (char *)malloc(sizeof(char) * (len + 2));
+	*line = (char *)malloc(sizeof(char) * (len + 1));
 	if (!line)
 		return ;
 	copy_line(list, *line);
