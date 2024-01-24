@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/24 12:23:58 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:38:51 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,18 +93,13 @@ void	copy_line(t_list *list, char *line)
 		{
 			if (list->str_read[j] == '\n')
 			{
-				line[i] = list->str_read[j];
-				i++;
-				line[i] = '\0';
+				line[i++] = list->str_read[j++];
 				return ;
 			}
-			line[i] = list->str_read[j];
-			i++;
-			j++;
+			line[i++] = list->str_read[j++];
 		}
 		list = list->next;
 	}
-	line[i] = '\0';
 }
 
 /* clean nodes after from a linked list */
@@ -122,8 +117,5 @@ void	clean_nodes(t_list **list, char *str)
 	}
 	*list = NULL;
 	if (str)
-	{
 		create_node(list, str);
-		//free(str);
-	}
 }

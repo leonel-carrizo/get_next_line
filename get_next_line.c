@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/24 12:24:54 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:35:39 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,16 @@ void	new_line(t_list *list, char **line)
 	size_t		i;
 	size_t		len;
 
-	if (!list)
-		return ;
 	temp = list;
 	len = 0;
 	while (temp)
 	{
 		i = 0;
-		while (temp->str_read[i])
+		while (temp->str_read[i++])
 		{
 			len++;
 			if (temp->str_read[i] == '\n')
 				break ;
-			i++;
 		}
 		temp = temp->next;
 	}
@@ -87,6 +84,7 @@ void	new_line(t_list *list, char **line)
 	if (!line)
 		return ;
 	copy_line(list, *line);
+	(*line)[len] = '\0';
 }
 
 /* clean list, remove lines returned */
