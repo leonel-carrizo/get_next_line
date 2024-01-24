@@ -55,3 +55,4 @@ dkms.conf
 *.nfs*
 *.swp*
 .vscode
+*tester*
