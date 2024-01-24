@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/23 22:16:34 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/24 12:24:54 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	save_str(int fd, t_list	**list, char **buff)
 	temp[bytes_read] = '\0';
 	*buff = temp;
 	create_node(list, temp);
-	free(temp);
 }
 
 /* search New Line in all STORAGE and return it */

@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:26:39 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/23 13:48:17 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:18:58 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_list
 }			t_list;
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 42
 # endif
 
 char	*get_next_line(int fd);

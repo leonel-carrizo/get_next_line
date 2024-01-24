@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/23 22:07:58 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/24 12:23:58 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	create_node(t_list **list, char *buff)
 	new_node = (t_list *)malloc(sizeof(t_list));
 	if (!new_node)
 		return ;
-	new_node->str_read = add_str(buff, i, 0);
+	new_node->str_read = buff;
 	new_node->next = NULL;
 	if (!*list)
 	{
@@ -124,6 +124,6 @@ void	clean_nodes(t_list **list, char *str)
 	if (str)
 	{
 		create_node(list, str);
-		free(str);
+		//free(str);
 	}
 }
