@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/24 22:37:49 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/25 01:13:14 by lcarrizo          ###   ##london.com     */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,27 @@
 /* return a new line from file descriptor given */
 char	*get_next_line(int fd)
 {
-	char			*line;
 	static t_list	*str_storage = NULL;
+	t_list			*head;
 	char			*buff;
+	char			*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = NULL;
-	buff = NULL;
+	head = NULL;
 	while (find_new_line(str_storage) < 1)
 	{
+		if (str_storage && !str_storage->next)
+			head = str_storage;
 		save_str(fd, &str_storage, &buff);
 		if (!str_storage)
 			return (NULL);
 		if (!buff)
 			break ;
 	}
+	if (head)
+		str_storage = head;
 	new_line(&str_storage, &line);
 	if (!line)
 		return (NULL);
@@ -59,6 +64,27 @@ void	save_str(int fd, t_list	**list, char **buff)
 	create_node(list, temp);
 }
 
+/* create a node on list to add content read */
+void	create_node(t_list **list, char *buff)
+{
+	t_list	*new_node;
+
+	new_node = NULL;
+	new_node = (t_list *)malloc(sizeof(t_list));
+	if (!new_node)
+		return ;
+	new_node->str_read = buff;
+	new_node->next = NULL;
+	if (!*list)
+	{
+		*list = new_node;
+		return ;
+	}
+	while ((*list)->next)
+		*list = (*list)->next;
+	(*list)->next = new_node;
+}
+
 /* search New Line in all STORAGE and save it to return it */
 void	new_line(t_list **list, char **line)
 {
@@ -85,47 +111,3 @@ void	new_line(t_list **list, char **line)
 	copy_line(list, *line, len);
 	(*line)[len] = '\0';
 }
-
-/* clean list, remove lines returned */
-// void	clean_list(t_list **list)
-// {
-// 	char	*new_str;
-// 	t_list	*temp;
-
-// 	if (!*list)
-// 		return ;
-// 	new_str = NULL;
-// 	temp = *list;
-// 	while (temp)
-// 	{
-// 		extra_line(temp, &new_str);
-// 		temp = temp->next;
-// 	}
-// 	clean_nodes(list, new_str);
-// }
-
-/* checks if there are more characters after a new line and saves it */
-// void	extra_line(t_list *list, char **str)
-// {
-// 	size_t	index;
-// 	size_t	len;
-
-// 	len = 0;
-// 	index = 0;
-// 	while (list->str_read[index] && list->str_read[index] != '\n')
-// 		index++;
-// 	if (list->str_read[index] == '\n')
-// 	{
-// 		index++;
-// 		while (list->str_read[index] != '\0')
-// 		{
-// 			len++;
-// 			index++;
-// 		}
-// 		if (len > 0)
-// 		{
-// 			index -= len;
-// 			*str = add_str(list->str_read, len, index);
-// 		}
-// 	}
-// }
