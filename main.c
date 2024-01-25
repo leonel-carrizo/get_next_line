@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 23:26:00 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/24 23:53:38 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/25 09:40:00 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	main(void)
 	char	*lines;
 	int		i;
 
-	fd = open("tests/files/test.txt", O_RDWR);
+	//fd = 1;
+	fd = open("tests/files/big_line_no_nl", O_RDWR);
 	i = 1;
 	while (1)
 	{
