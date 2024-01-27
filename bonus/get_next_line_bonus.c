@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/25 11:54:46 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/27 14:38:17 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ void	save_str(int fd, t_list	**list, char **buff)
 	if (!temp)
 		return ;
 	bytes_read = read(fd, temp, BUFFER_SIZE);
+	if (bytes_read == -1)
+	{
+		free(temp);
+		while (*list)
+			clean_node(list);
+		return ;
+	}
 	if (bytes_read <= 0)
 	{
 		free (temp);

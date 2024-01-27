@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 00:58:48 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/25 01:13:14 by lcarrizo          ###   ##london.com     */
+/*   Updated: 2024/01/27 18:17:19 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 /* return a new line from file descriptor given */
 char	*get_next_line(int fd)
 {
-	static t_list	*str_storage = NULL;
+	static t_list	*str_storage;
 	t_list			*head;
 	char			*buff;
 	char			*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 2048 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = NULL;
 	head = NULL;
@@ -53,6 +53,13 @@ void	save_str(int fd, t_list	**list, char **buff)
 	if (!temp)
 		return ;
 	bytes_read = read(fd, temp, BUFFER_SIZE);
+	if (bytes_read == -1)
+	{
+		free(temp);
+		while (*list)
+			clean_node(list);
+		return ;
+	}
 	if (bytes_read <= 0)
 	{
 		free (temp);

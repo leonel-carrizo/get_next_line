@@ -6,7 +6,7 @@
 /*   By: lcarrizo <lcarrizo@student.42london.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 22:27:01 by lcarrizo          #+#    #+#             */
-/*   Updated: 2024/01/25 10:51:57 by lcarrizo         ###   ########.fr       */
+/*   Updated: 2024/01/27 13:23:19 by lcarrizo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ void	copy_line(t_list **list, char *line, size_t len)
 {
 	size_t	i;
 	size_t	j;
-	t_list	*temp;
 
-	temp = *list;
 	i = 0;
 	while (*list && i < len)
 	{
@@ -47,12 +45,7 @@ void	copy_line(t_list **list, char *line, size_t len)
 			line[i++] = (*list)->str_read[j++];
 		if ((*list)->str_read[j])
 			extra_str(list, j);
-		temp = temp->next;
-		free((*list)->str_read);
-		(*list)->str_read = NULL;
-		free(*list);
-		*list = NULL;
-		*list = temp;
+		clean_node(list);
 	}
 }
 
@@ -97,4 +90,20 @@ char	*add_str(char *str, size_t len, size_t index)
 	}
 	new_str[i] = '\0';
 	return (new_str);
+}
+
+void	clean_node(t_list **list)
+{
+	t_list	*temp;
+
+	if (*list)
+	{
+		temp = *list;
+		temp = temp->next;
+		free((*list)->str_read);
+		(*list)->str_read = NULL;
+		free(*list);
+		*list = NULL;
+		*list = temp;
+	}
 }
